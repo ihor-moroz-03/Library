@@ -41,10 +41,20 @@ namespace LibraryAPI.Controllers
             return bookEntity;
         }
 
+        [HttpGet("{firstName}-{lastName}")]
+        public async Task<ActionResult<IEnumerable<BookEntity>>> GetBooksByAuthorName(string firstName, string lastName)
+        {
+            return await _context.Books
+                .Where(b => b.Author.FirstName.ToLower() == firstName.ToLower() &&
+                            b.Author.LastName.ToLower() == lastName.ToLower())
+                .ToArrayAsync();
+        }
+
         // PUT: api/BookEntities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBookEntity(long id, BookEntity bookEntity)
+
         {
             if (id != bookEntity.Id)
             {
